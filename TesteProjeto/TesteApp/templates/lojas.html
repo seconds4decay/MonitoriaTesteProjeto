@@ -1,0 +1,13 @@
+<html>
+    <body>
+        <h1>Lojas</h1>
+        
+        {% for loja in lojas %}
+            <h3>{{ loja.nome }}</h3>
+            <p>{{ loja.telefone }}</p>
+            <p>{{ loja.endereco }}</p>
+        {% endfor %}
+        <br>
+        <a href="{% url 'home' %}">Home</a>
+    </body>
+</html>

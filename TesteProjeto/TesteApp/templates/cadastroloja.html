@@ -1,0 +1,14 @@
+<html>
+    <body>
+        <h1>Cadastro de Loja</h1>
+        <form method="post" action="{% url 'cadastroloja' %}">
+            {% csrf_token %}
+            <input type="text" name="nome" placeholder="Nome da Loja">
+            <input type="text" name="endereco" placeholder="Endereço">
+            <input type="text" name="telefone" placeholder="Telefone">
+            <input type="submit" value="Cadastrar">
+        </form>
+
+        <a href="{% url 'home' %}">Home</a>
+    </body>
+</html>
