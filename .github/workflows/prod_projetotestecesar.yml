@@ -42,7 +42,7 @@ jobs:
           cd TesteProjeto/
           zip release.zip ./* -r
           cd ..
-          mv TesteProjeto/release.zip 
+          mv TesteProjeto/release.zip .
 
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v4
