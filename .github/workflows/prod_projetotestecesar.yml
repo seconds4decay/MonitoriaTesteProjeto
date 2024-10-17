@@ -28,21 +28,32 @@ jobs:
           source venv/bin/activate
       
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: |
+          pip install -r requirements.txt
+          npm ci
         
+      - name: Run local server
+        run: |
+          cd ./TesteProjeto/
+          python manage.py migrate
+          python manage.py runserver &
+          sleep 5
+          npx cypress run
+
       - name: Cleaning testing files
         run: |
-          cd TesteProjeto/
-          rm db.sqlite3
+          cd ./TesteProjeto/
           rm .env
+          rm db.sqlite3
+          rm cypress.config.js
+          rm package-lock.json
+          rm package.json
+          rm -rf cypress
+          rm -rf node_modules
           cd ..
 
       - name: Zip artifact for deployment
-        run: |
-          cd TesteProjeto/
-          zip release.zip ./* -r
-          cd ..
-          mv TesteProjeto/release.zip 
+        run: zip release.zip ./* -r
 
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v4
@@ -74,9 +85,9 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_201E592C7ABC471E8BC943FD52F1328F }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_EA74BCCB521549CCA980885475EEFEAC }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_E9971B0C57F744359DA2DC3C8C567F39 }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_DB2443B669DC4659A41F21AA4174729B }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_DD79B38D64FD467187AF560DE3BC0B2D }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_AEFC9AE84B7D49968CDAF44C99A7C7F7 }}
 
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v3
